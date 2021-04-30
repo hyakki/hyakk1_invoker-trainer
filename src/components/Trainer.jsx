@@ -41,10 +41,10 @@ class Trainer extends React.Component {
 
     const [spell] = r
 
-    if (this.state.slots.indexOf(spell.id) >= 0) { return }
+    if (this.state.slots.indexOf(spell.id) === 0) { return }
 
     this.setState({
-      slots: [...this.state.slots, spell.id].slice(-2)
+      slots: [spell.id, ...this.state.slots].slice(0, 2)
     })
   }
   onKeyUp(e) {
