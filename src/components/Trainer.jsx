@@ -57,18 +57,28 @@ class Trainer extends React.Component {
     return (
       <>
         <h1>Invoker Trainer</h1>
-        <h2>
-          Orbs: {JSON.stringify(this.state.orbs)}
-        </h2>
-        <h2>
-          Orbs Human: {JSON.stringify(this.state.orbs.map(i => data.orbs[i].name))}
-        </h2>
-        <h2>
-          Slots: {JSON.stringify(this.state.slots)}
-        </h2>
-        <h2>
-          Slots Human: {JSON.stringify(this.state.slots.map(i => data.spells[i].name))}
-        </h2>
+        {/*<h2>*/}
+        {/*  Orbs: {JSON.stringify(this.state.orbs)}*/}
+        {/*</h2>*/}
+        {/*<h2>*/}
+        {/*  Orbs Human: {JSON.stringify(this.state.orbs.map(i => data.orbs[i].name))}*/}
+        {/*</h2>*/}
+        <div>
+          {this.state.orbs.map((i, index) => (
+            <img className="orb" key={index} src={data.orbs[i].picture} alt={data.orbs[i].name}/>
+          ))}
+        </div>
+        {/*<h2>*/}
+        {/*  Slots: {JSON.stringify(this.state.slots)}*/}
+        {/*</h2>*/}
+        {/*<h2>*/}
+        {/*  Slots Human: {JSON.stringify(this.state.slots.map(i => data.spells[i].name))}*/}
+        {/*</h2>*/}
+        <div>
+          {this.state.slots.map((i, index) => (
+            <img className="spell" key={index} src={data.spells[i].picture} alt={data.spells[i].name}/>
+          ))}
+        </div>
       </>
     )
   }
