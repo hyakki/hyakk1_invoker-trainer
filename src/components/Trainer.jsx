@@ -7,7 +7,18 @@ class Trainer extends React.Component {
     super(props)
     this.state = {
       orbs: [],
-      slots: [],
+      slots: [
+        {
+          key: 'd',
+          spell: null,
+          ready: false,
+        },
+        {
+          key: 'f',
+          spell: null,
+          ready: false,
+        },
+      ],
     }
   }
   componentDidMount() {
@@ -41,10 +52,43 @@ class Trainer extends React.Component {
 
     const [spell] = r
 
-    if (this.state.slots.indexOf(spell.id) === 0) { return }
+    if (this.state.slots[0].spell === spell.id) { return }
 
     this.setState({
-      slots: [spell.id, ...this.state.slots].slice(0, 2)
+      slots: [
+        {
+          ...this.state.slots[0],
+          spell: spell.id,
+          ready: true,
+        },
+        {
+          ...this.state.slots[1],
+          spell: this.state.slots[0].spell,
+          ready: this.state.slots[0].ready,
+        },
+      ]
+    })
+  }
+  handleSpells(k) {
+    const allowed = ['d', 'f']
+    const index = allowed.indexOf(k)
+
+    if (index < 0) { return }
+
+    const slot = this.state.slots[index]
+
+    if (!slot.ready || slot.spell === null) { return }
+
+    this.castSpell(slot.spell)
+  }
+  castSpell(i) {
+    // alert(`Cast spell ${data.spells[i].name}`)
+
+    const slots = [...this.state.slots]
+    slots.find(f => f.spell === i).ready = false
+
+    this.setState({
+      slots,
     })
   }
   onKeyUp(e) {
@@ -52,32 +96,60 @@ class Trainer extends React.Component {
 
     this.handleOrbs(e.key)
     this.handleSlots(e.key)
+    this.handleSpells(e.key)
   }
   render() {
     return (
       <>
-        <h1>Invoker Trainer</h1>
-        {/*<h2>*/}
-        {/*  Orbs: {JSON.stringify(this.state.orbs)}*/}
-        {/*</h2>*/}
-        {/*<h2>*/}
-        {/*  Orbs Human: {JSON.stringify(this.state.orbs.map(i => data.orbs[i].name))}*/}
-        {/*</h2>*/}
-        <div>
-          {this.state.orbs.map((i, index) => (
-            <img className="orb" key={index} src={data.orbs[i].picture} alt={data.orbs[i].name}/>
-          ))}
-        </div>
-        {/*<h2>*/}
-        {/*  Slots: {JSON.stringify(this.state.slots)}*/}
-        {/*</h2>*/}
-        {/*<h2>*/}
-        {/*  Slots Human: {JSON.stringify(this.state.slots.map(i => data.spells[i].name))}*/}
-        {/*</h2>*/}
-        <div>
-          {this.state.slots.map((i, index) => (
-            <img className="spell" key={index} src={data.spells[i].picture} alt={data.spells[i].name}/>
-          ))}
+        <h1 className="title">Invoker Trainer</h1>
+        
+        <div className="ui">
+          <div className="ui-orbs">
+            {this.state.orbs.map((i, index) => (
+              <div className="ui-orb" key={index} >
+                <img className="ui-orb__picture" src={data.orbs[i].picture} alt={data.orbs[i].name}/>
+              </div>
+            ))}
+          </div>
+
+          <div className="ui-items">
+            {data.orbs.map((o, index) => (
+              <div className="ui-item" key={index}>
+                <div className="ui-item__letter">
+                  {o.key}
+                </div>
+                <div className="ui-item__picture-outer">
+                  <img src={o.picture} alt="" className="ui-item__picture"/>
+                </div>
+              </div>
+            ))}
+
+            {this.state.slots.map((s, index) => {
+              const pictureSrc = s.spell !== null ? data.spells[s.spell].picture : data.icons.placeholder
+              const readyClass = s.spell !== null && !s.ready ? 'is-in-cooldown' : ''
+
+              return (
+                <div className={`ui-item ${readyClass}`} key={index}>
+                  <div className="ui-item__letter">
+                    {s.key}
+                  </div>
+                  <div className="ui-item__picture-outer">
+                    <img src={pictureSrc} alt="" className="ui-item__picture"/>
+                  </div>
+                </div>
+              )
+            })}
+
+            <div className="ui-item">
+              <div className="ui-item__letter">
+                r
+              </div>
+              <div className="ui-item__picture-outer">
+                <img src={data.icons.invoke} alt="" className="ui-item__picture"/>
+              </div>
+            </div>
+
+          </div>
         </div>
       </>
     )

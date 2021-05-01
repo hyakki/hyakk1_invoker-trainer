@@ -1,5 +1,5 @@
 const path = './../assets'
-const pictures = import.meta.globEager('./../assets/*')
+const pictures = import.meta.globEager('./../assets/*.png')
 
 export const orbs = [
   {
@@ -84,3 +84,8 @@ export const spells = [
     picture: pictures[`${path}/deafening-blast.png`].default,
   }
 ]
+
+export const icons = {
+  placeholder: pictures[`${path}/placeholder.png`].default,
+  invoke: pictures[`${path}/invoke.png`].default,
+}
