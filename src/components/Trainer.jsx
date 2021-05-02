@@ -19,11 +19,19 @@ class Trainer extends React.Component {
           ready: false,
         },
       ],
+      combo: [],
     }
   }
   componentDidMount() {
     this.onKeyUp = this.onKeyUp.bind(this)
     document.addEventListener('keydown', this.onKeyUp)
+
+    this.next = this.next.bind(this)
+
+    this.start()
+  }
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyUp)
   }
   isAllowed(k) {
     const allowed = ['q', 'w', 'e', 'r', 'd', 'f']
@@ -52,7 +60,7 @@ class Trainer extends React.Component {
 
     const [spell] = r
 
-    if (this.state.slots[0].spell === spell.id) { return }
+    if (this.state.slots.find(s => s.spell === spell.id) !== undefined) { return }
 
     this.setState({
       slots: [
@@ -98,11 +106,45 @@ class Trainer extends React.Component {
     this.handleSlots(e.key)
     this.handleSpells(e.key)
   }
+  start() {
+    this.next()
+  }
+  next() {
+    const l = data.combos.length - 1
+    const i = Math.round(Math.random() * l)
+
+    this.setState({
+      // combo: data.combos[data.combos.length - 1],
+      combo: data.combos[i],
+    })
+  }
   render() {
     return (
       <>
         <h1 className="title">Invoker Trainer</h1>
-        
+
+        <button className="btn-change" onClick={this.next}>next</button>
+
+        <div className="todos">
+          {this.state.combo.map((t, index) => (
+            <div key={index} className={`todo--${data.spells[t].category}`}>
+              <img src={data.spells[t].picture} alt="" className="todo__picture"/>
+              <div className="todo__keys keys">
+                {data.spells[t].combination.map((k, index) => {
+                  return (
+                    <div className={`keys__key--${data.orbs[k].category}`} key={index}>
+                      {data.orbs[k].key}
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="todo__name">
+                {data.spells[t].name}
+              </div>
+            </div>
+          ))}
+        </div>
+
         <div className="ui">
           <div className="ui-orbs">
             {this.state.orbs.map((i, index) => (

@@ -1,10 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap');
 
+$c-quas: #7272ff;
+$c-wex: #c558cd;
+$c-exort: #e5952a;
+$c-neutral: #fff;
+
 * {
   box-sizing: border-box;
 }
 
+body {
+  background-color: #212121;
+}
+
 .app {
+  padding: 20px;
   font-family: 'Cinzel', serif;
 }
 
@@ -13,11 +23,34 @@ img {
   pointer-events: none;
 }
 
+.btn-change {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  appearance: none;
+  border: 1px solid #525252;
+  background: transparent;
+  color: #525252;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition-property: color, border-color;
+  transition-duration: .2s;
+  transition-timing-function: ease-out;
+
+  &:hover {
+    color: #8e8e8e;
+    border-color: #8e8e8e;
+  }
+}
+
 .title {
   margin: 0;
-  font-size: 3rem;
+  font-size: 2rem;
   text-transform: uppercase;
   text-align: center;
+  color: #3e3e3e;
 }
 
 .ui {
@@ -129,5 +162,95 @@ img {
   .ui-item.is-in-cooldown & {
     opacity: 0.3;
     filter: grayscale(1);
+  }
+}
+
+.todos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+[class*='todo--'],
+.todo {
+  display: flex;
+  align-items: center;
+  min-width: 450px;
+  color: white;
+  border: 1px solid $c-neutral;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 30px;
+  background: linear-gradient(0deg, darken($c-neutral, 80%), transparent);
+
+  &[class*='--quas'] {
+    border-color: $c-quas;
+    color: $c-quas;
+    background: linear-gradient(0deg, darken($c-quas, 50%), transparent);
+  }
+
+  &[class*='--wex'] {
+    border-color: $c-wex;
+    color: $c-wex;
+    background: linear-gradient(0deg, darken($c-wex, 30%), transparent);
+  }
+
+  &[class*='--exort'] {
+    border-color: $c-exort;
+    color: $c-exort;
+    background: linear-gradient(0deg, darken($c-exort, 30%), transparent);
+  }
+
+  & + & {
+    margin-top: 10px;
+  }
+}
+
+.todo__picture {
+  width: 40px;
+  height: 40px;
+}
+
+.todo__keys {
+  margin-left: 10px;
+}
+
+.todo__name {
+  margin-left: 10px;
+}
+
+.keys {
+  display: flex;
+  align-items: center;
+}
+
+[class*='keys__key--'],
+.keys__key {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+
+  &[class*='--quas'] {
+    border-color: $c-quas;
+    color: $c-quas;
+  }
+
+  &[class*='--wex'] {
+    border-color: $c-wex;
+    color: $c-wex;
+  }
+
+  &[class*='--exort'] {
+    border-color: $c-exort;
+    color: $c-exort;
+  }
+
+  & + & {
+    margin-left: 5px;
   }
 }
